@@ -2,9 +2,7 @@
 
  In the "./templates/" folder, this pdf is broken into its fundamental parts
 
- This includes 1) a background template as required by the original script, 2) a cover page, 3) two constants pages, 4) TOC pages for sections 1-5,
-
- 5) 3 pages for Misc Notes, 6) Sections 1-5 each with 40 pages per section
+ This includes 1) a background template as required by the original script, 2) a cover page, 3) two constants pages, 4) TOC pages for sections 1-5, 5) 3 pages for Misc Notes, 6) Sections 1-5 each with 40 pages per section
 
  All pages should have hyperlinks on the book tabs redirecting to one of the first 9 pages (see "Lab Journal Chem.pdf")
 
