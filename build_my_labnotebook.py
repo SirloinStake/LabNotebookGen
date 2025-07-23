@@ -10,9 +10,11 @@ tabLinks=LinearLinks(left=6,top=37.7,width=28,height=92.4,flowdirection="down")
 bookCover=doc.addPage(title=f"Notebook Cover",basepdfname="templates/journalCover.pdf",toclevel=1)
 bookCover.addLinks(tabLinks)
 
-# build constants page
+# build constants pages
+for i in range(2):
+    pdfConstants = {}
+    pdfConstants[i]:append{f"templates/journalConstants_{i+1}.pdf"}
 
-bookConstants=doc.addPages("templates/journalConstants.pdf")
 
 # link top level pages to eachother
 tabLinks.addLink(bookConstants,"")
