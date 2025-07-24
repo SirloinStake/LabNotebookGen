@@ -1,4 +1,5 @@
-import pymupdf
+import fitz
+from datetime import date,timedelta
 
 class Page:
     def __init__(self, title="",titlex=20,titley=250,titlesize=50,basepdfname="",toclevel=0,links=[]):
@@ -6,7 +7,7 @@ class Page:
         self.linksets=[]
         self.pageno=0
         self.fitzpage=""
-        self.titlecol=pymupdf.utils.getColor("black")
+        self.titlecol=fitz.utils.getColor("black")
         self.titlesize=titlesize
         self.titlex=titlex
         self.titley=titley
@@ -26,7 +27,7 @@ class Page:
         for linkset in self.linksets:
             linkset.render(self)
         #render title
-        #self.fitzpage.insert_text((self.titlex,self.titley), self.title,color=self.titlecol, overlay=True,fontsize=self.titlesize)
+        self.fitzpage.insert_text((self.titlex,self.titley), self.title,color=self.titlecol, overlay=True,fontsize=self.titlesize)
 
 
 
@@ -145,18 +146,18 @@ class LinearLinks(Links):
 
 
 
-        boxcol=pymupdf.utils.getColor("black")
+        boxcol=fitz.utils.getColor("black")
 
         for target in self.pages :
 
             if (target.pageno==page.pageno):
-                textcol=pymupdf.utils.getColor("white")
-                backcol=pymupdf.utils.getColor("black")
+                textcol=fitz.utils.getColor("white")
+                backcol=fitz.utils.getColor("black")
             else:
-                textcol=pymupdf.utils.getColor("black")
-                backcol=pymupdf.utils.getColor("white")
-            r1 = pymupdf.Rect(l, t, r, b)
-            textrect = pymupdf.Rect(l, t+(self.height/2)-(self.fontsize/2*1.33), r, b)
+                textcol=fitz.utils.getColor("black")
+                backcol=fitz.utils.getColor("white")
+            r1 = fitz.Rect(l, t, r, b)
+            textrect = fitz.Rect(l, t+(self.height/2)-(self.fontsize/2*1.33), r, b)
             page.fitzpage.draw_rect(r1,color=boxcol, fill=backcol, overlay=True)
 
             if (self.flowdirection=="right"): 
@@ -193,26 +194,26 @@ class Doc:
     
     def __init__(self,basepdfname):
         self.pages=[]
-        self.fitzdoc = pymupdf.open() 
+        self.fitzdoc = fitz.open() 
         self.basepdfname=basepdfname
         self.toc=[]
     
     def addPage( self, title="",titlex=20,titley=250,titlesize=50,basepdfname="",toclevel=0,links=[]):
         page=Page(title=title,titlex=titlex,titley=titley,titlesize=titlesize,basepdfname=basepdfname,toclevel=toclevel,links=links)
-        self.addPages([page])
+        self.addPages(page)
         return page
 
     # Add one or more pages into the document.
     # This method will create fitz pages for each doc, however rendering of content
     # is done as a separate pass
-    def addPages(self,pages, basepdfname=""):
+    def addPages(self,*pages):
         for page in pages:
             self.pages.append(page)
             page.pageno=len(self.pages)-1
             if (page.basepdfname==""):
-                page.basepdf=pymupdf.open(self.basepdfname)
+                page.basepdf=fitz.open(self.basepdfname)
             else:
-                page.basepdf=pymupdf.open(page.basepdfname)
+                page.basepdf=fitz.open(page.basepdfname)
             #copy tempate into new doc
             self.fitzdoc.insert_pdf(page.basepdf, from_page=0, to_page=0,start_at=-1, rotate=-1, links=True, annots=True, show_progress=0, final=1)
             if page.toclevel!=0:
@@ -228,5 +229,4 @@ class Doc:
             page.render(self.fitzdoc);
         self.fitzdoc.set_toc(self.toc, collapse=1)
         self.fitzdoc.save(outputfilename)
-
 

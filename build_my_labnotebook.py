@@ -11,13 +11,18 @@ bookCover=doc.addPage(title=f"Notebook Cover",basepdfname="templates/journalCove
 bookCover.addLinks(tabLinks)
 
 # build constants pages
-for i in range(2):
-    pdfConstants = {}
-    pdfConstants[i]:append{f"templates/journalConstants_{i+1}.pdf"}
+# for i in range(2):
+#     pdfConstants = {}
+#     pdfConstants[i]:append{f"templates/journalConstants_{i+1}.pdf"}
+# 
+# # link top level pages to eachother
+# tabLinks.addLink(bookConstants,"")
 
+journalConstants1=doc.addPage(title="Constants 1",basepdfname="templates/journalConstants_1.pdf",toclevel=1)
+journalConstants1.addLinks(tabLinks)
 
-# link top level pages to eachother
-tabLinks.addLink(bookConstants,"")
+tabLinks.addLink(bookCover,"Cover")
+tabLinks.addLink(journalConstants1,"Constants 1")
 
 doc.render(sys.argv[1])
 
