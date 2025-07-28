@@ -10,6 +10,6 @@ LabNoteBook_vX.X.pdf is the actual notebook
 
  All section pages have an arrow which links back to that sections respective 
  
- Original script is contained in "backup" files and in "example assets" folder.
+ Original script is contained in "example assets" folder.
  
  https://github.com/jacrify/diaryGenerator
