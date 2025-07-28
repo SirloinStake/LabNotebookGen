@@ -1,3 +1,5 @@
+LabNoteBook_vX.X.pdf is the actual notebook
+ 
  In the "./templates/" folder, this pdf is broken into its fundamental parts
 
  This includes 1) a background template as required by the original script, 2) a cover page, 3) two constants pages, 4) TOC pages for sections 1-5, 5) 3 pages for Misc Notes, 6) Sections 1-5 each with 40 pages per section
