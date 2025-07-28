@@ -6,7 +6,7 @@ class Page:
         self.linksets=[]
         self.pageno=0
         self.fitzpage=""
-        self.titlecol=pymupdf.utils.getColor("black")
+        self.titlecol=pymupdf.utils.getColor("white")
         self.titlesize=titlesize
         self.titlex=titlex
         self.titley=titley
@@ -134,7 +134,7 @@ class LinearLinks(Links):
             r=l+self.width
 
             if (self.top!=""):
-                t=self.top  
+                t=self.top
             else:
                 if (self.bottom <= 0): #bottom is expressed as negative offset from bottom edge
                     #self.bottom=page.fitzpage.rect.y1+self.bottom
@@ -143,29 +143,30 @@ class LinearLinks(Links):
 
 
 
-
-
-        boxcol=pymupdf.utils.getColor("black")
+        boxcol=(0, 0, 0, 1)
 
         for target in self.pages :
 
             if (target.pageno==page.pageno):
-                textcol=pymupdf.utils.getColor("white")
-                backcol=pymupdf.utils.getColor("black")
+                textcol=(0, 0, 0, 0)
+                backcol=(0, 0, 0, 0)
             else:
-                textcol=pymupdf.utils.getColor("black")
-                backcol=pymupdf.utils.getColor("white")
+                textcol=(0, 0, 0, 0)
+                backcol=(0, 0, 0, 0)
             r1 = pymupdf.Rect(l, t, r, b)
             textrect = pymupdf.Rect(l, t+(self.height/2)-(self.fontsize/2*1.33), r, b)
-            page.fitzpage.draw_rect(r1,color=boxcol, fill=backcol, overlay=True)
+            page.fitzpage.draw_rect(r1,overlay=False)
 
             if (self.flowdirection=="right"): 
                 r=r+self.width
                 l=l+self.width
             else:
-                t=t+self.height
-                b=b+self.height
-                
+                if self.height>self.width:
+                    t=t+self.height+5.52
+                    b=b+self.height+5.52
+                else:
+                    t=t+self.height
+                    b=b+self.height
 
 
             linkdict = {
@@ -199,13 +200,13 @@ class Doc:
     
     def addPage( self, title="",titlex=20,titley=250,titlesize=50,basepdfname="",toclevel=0,links=[]):
         page=Page(title=title,titlex=titlex,titley=titley,titlesize=titlesize,basepdfname=basepdfname,toclevel=toclevel,links=links)
-        self.addPages(page)
+        self.addPages([page])
         return page
 
     # Add one or more pages into the document.
     # This method will create fitz pages for each doc, however rendering of content
     # is done as a separate pass
-    def addPages(self,basepdfname="",*pages):
+    def addPages(self,pages, basepdfname=""):
         for page in pages:
             self.pages.append(page)
             page.pageno=len(self.pages)-1
